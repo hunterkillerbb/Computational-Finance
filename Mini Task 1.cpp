@@ -64,22 +64,22 @@ double  shortcallOptionPrice(double S, double t, double X, double r, double sigm
 {
 	if (fabs(T - t)<1.e-14)  // check if we are at maturity
 	{
-		if (S<X)return X - S;
+		if (S>X)return X - S;
 		else return 0;
 	}
 	if ((T - t) <= -1.e-14)return 0.;  // option expired
-	if (X<1.e-14*S)return S - X*exp(-r*(T - t));  // check if strike << asset then exercise with certainty
+	if (X < 1.e-14*S)return X*exp(-r*(T - t)) - S;// check if strike << asset then exercise with certainty
 	if (S<1.e-14*X)return 0.;  // check if asset << strike then worthless
 	if (sigma*sigma*(T - t)<1.e-14)  // check if variance very small then no diffusion
 	{
-		if (S>X*exp(-r*(T - t)))return  S - X*exp(-r*(T - t));
+		if (S>X*exp(-r*(T - t)))return  X*exp(-r*(T - t)) - S;
 		else return 0.;
 	}
 	// calculate option price
 	double d1 = (log(S / X) + (r + sigma*sigma / 2.)*(T - t)) / (sigma*sqrt(T - t));
 	double d2 = (log(S / X) + (r - sigma*sigma / 2.)*(T - t)) / (sigma*sqrt(T - t));
 
-	return  -normalDistribution(d1)*S + normalDistribution(d2)*X*exp(-r*(T - t));
+	return  normalDistribution(d2)*X*exp(-r*(T - t)) - normalDistribution(d1)*S;
 	// a short call option. The payoff is opposite of a long call option.  
 }
 
@@ -97,7 +97,7 @@ double PortV(double s, double k)
 int main()
 {
 	double s = 0., k = 0.; // the stock price and time t
-	int X1 = 180, X2 = 280;  
+	int X1 = 180, X2 = 280;
 	int B = X2 - X1;
 	double T = 1.5, r = 0.05, sigma = 0.38;
 
@@ -105,7 +105,7 @@ int main()
 	cout << "Step1: Show the current(t = 0) value of the portfolio according to the payoff\n " << endl;
 	cout << "Press any key to continue. . .\n" << endl;
 	_getch();
-           // Loop for generate the different scenarios at time t = 0 
+	// Loop for generate the different scenarios at time t = 0 
 	for (s = 0; s <= 560; s += 56)
 
 	{
@@ -129,7 +129,7 @@ int main()
 	cout << "Press any key to continue. . .\n" << endl;
 	_getch();
 
-          // Loop for generating the scenarios at time t = T  
+	// Loop for generating the scenarios at time t = T  
 	for (s = 0; s <= 560; s += 56)
 
 	{
@@ -149,8 +149,8 @@ int main()
 	}
 	cout << "\n\n\n" << endl;
 
-          // Generate a simple and messy table
-	cout << "Step3: Create the simple table of results\n" << endl; 
+	// Generate a simple and messy table
+	cout << "Step3: Create the simple table of results\n" << endl;
 	cout << "Press any key to continue. . .\n\n" << endl;
 	_getch();
 
@@ -158,18 +158,18 @@ int main()
 	cout << "\n" << endl;
 
 	const char separator = ' ';
-	
+
 	cout << left << setw(10) << setfill(separator) << " " << "Stock price" << "   ";
 	cout << setfill(separator) << " " << "t = 0" << "      ";
 	cout << setfill(separator) << " " << "t = T" << " " << setfill(separator) << endl;
 	cout << "-----------------------------------------------------" << endl;
-	
+
 	for (s = 0; s <= 560; s += 56)
 	{
-		cout  << setw(15) << setfill(separator) << "  " << s << "  " << setfill(separator);
-			cout  << setw(7) << setfill(separator) << "  " << int(PortV(s, 0)) << "  " << setfill(separator)
-			 << setw(7) << setfill(separator) << "  " << int(PortV(s, T)) << "  " << setfill(separator) << endl;	
+		cout << setw(15) << setfill(separator) << "  " << s << "  " << setfill(separator);
+		cout << setw(7) << setfill(separator) << "  " << int(PortV(s, 0)) << "  " << setfill(separator)
+			<< setw(7) << setfill(separator) << "  " << int(PortV(s, T)) << "  " << setfill(separator) << endl;
 	}
 	cin.get();
 	return 0;
-   }
+}
