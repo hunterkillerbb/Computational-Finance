@@ -1,5 +1,3 @@
 # Computational-Finance       
-# Updated to Mini-task 2 
-# ( ͡° ͜ʖ ͡°)
-# ( ͡⊙ ͜ʖ ͡⊙)
-# ( ͡◉ ͜ʖ ͡◉)
+# Updated to Coursework 1
+ 
