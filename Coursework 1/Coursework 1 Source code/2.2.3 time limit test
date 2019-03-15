@@ -68,7 +68,7 @@ int main()
 
 	double S0 = 66500, sigma = 0.41, r = 0.06, T = 0.75, X = 66500, B = 113200, D0 = 0.06;
 	int K = 35;
-	int N = 10000;
+	int N = 1000;
 	double sum = 0;
 	int n; 
 	
