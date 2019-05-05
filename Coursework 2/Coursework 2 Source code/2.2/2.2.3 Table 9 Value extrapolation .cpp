@@ -232,10 +232,10 @@ int main()
 		}
 
 		diff = value - valueOld2;
-        rate = abs(diffOld/diff);
+                rate = abs(diffOld/diff);
 		cout <<  n << " , "<< elapsed.count() << " , " << value << " , " <<(16 * value - 8*valueOld2 + valueOld1) / 9 << " , "<< log(rate)/log(2) <<  endl;
 		output <<  n << " , "<< elapsed.count() << "  ,  " << value  << " , "<<(16 * value - 8*valueOld2 + valueOld1) / 9<< " , "<< log(rate)/log(2) <<  endl;
-        valueOld1 = valueOld2;
+                valueOld1 = valueOld2;
 		valueOld2= value ;
 		diffOld = diff; 
 
